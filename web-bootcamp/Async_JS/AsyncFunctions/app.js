@@ -3,20 +3,24 @@
 // ASYNC FUNCTIONS 
 //===================
 //  A newer and cleaner syntax for working with async code!
-// Syntax "makeup" for promises
+// Syntax "makeup" for promises (깔끔한 코드 작성을 돕는다)
 
 //===================
 // The async keyword
 //===================
 // Async functions always return a promise
+    // async, which we do by just putting the async keyword in front of the function, that function automaticallyreturns a promise.
+    //Even though I never said return a promise explicitly, at least it returns a promise.
+        // async function hello() {
+        // } // 
+        // hello()
+        // Promise {<fulfilled>: undefined}
+        // [[Prototype]]: Promise
+        // [[PromiseState]]: "fulfilled"
+        // [[PromiseResult]]: undefined
+
 // if the function returns a value, the promise will be resloved with that value
 // if the function throws an exception, the promise will be rejected 
-
-// async function hello() {
-// }
-
-
-
 
 async function sing() {
     throw "OH NO, PROBLEM!"
