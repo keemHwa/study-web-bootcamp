@@ -1,3 +1,10 @@
+# REQUESTS
+
+- XMLHTTP
+- FETCH
+- AXIOS
+
+
 ## AJAX와 API
 
 - Ajax
