@@ -7,7 +7,7 @@
 //====================================
 // there's no support for promises or async functions 
 // if we need to make subsequent requests , we would have to Nest things over and over with a bunch of callback
-
+ 
 const req = new XMLHttpRequest();
 
 req.onload = function () {
