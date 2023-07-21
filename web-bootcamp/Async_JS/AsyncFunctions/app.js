@@ -54,6 +54,12 @@ login('todd', 'corgifeetarecute')
 
 
 
+// =======================
+// The await keyword
+// =======================
+// We can only use the await keyword inside of functions declared with async.
+// await will pause the execution of the function, waiting for a promise to be resolve 
+
 
 
 const delayedColorChange = (color, delay) => {
@@ -74,8 +80,10 @@ const delayedColorChange = (color, delay) => {
 //     .then(() => delayedColorChange('violet', 1000))
 
 
-async function rainbow() {
-    await delayedColorChange('red', 1000)
+async function rainbow() { 
+    //.then을 쓰지 않아도 되고, 콜백을 전달하거나, 반한된 값을 연결할 필요도 없다.
+    // So I only await promises or functions that return a promise right like this here.
+    await delayedColorChange('red', 1000) 
     await delayedColorChange('orange', 1000)
     await delayedColorChange('yellow', 1000)
     await delayedColorChange('green', 1000)
@@ -109,6 +117,7 @@ const fakeRequest = (url) => {
 }
 
 
+// 비동기 함수의 오류 처리 
 async function makeTwoRequests() {
     try {
         let data1 = await fakeRequest('/page1');
