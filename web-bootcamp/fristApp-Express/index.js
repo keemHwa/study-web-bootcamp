@@ -4,7 +4,8 @@ const express = require('express');
 const app = express();
 
 // 하나 이상의 응답을 얻는 http 요청은 받을 수 없다. (아래 .get이 있기에 )
-// app.use((req,res) => { // app.use 어떤 요청이 들어오든 콜백 실행.
+// app.use((req,res) => { // app.use 어떤 요청이 들어오든 콜백 실행. 
+        // 라우트는 아님. 경로도 중요 하지 않음 
 //      * req는 들어온 HTTP 요청을 기반으로 Express가 생성한 객체
 //      * res도 Express가 생성한 객체로 둘 다 콜백에 전달
 //        
