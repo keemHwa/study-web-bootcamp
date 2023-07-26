@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RANDOM</title>
+</head>
+
+<body>
+    <h1>YOUR ROMDOM NUMER IS <%= num %> <%#  값을 임베드하고 문서에 실제로 렌더링 %></h1>  
+    <% if(num % 2 === 0) {%> <%#  그 자체로 아무것도 렌더링 하지 않고, JS 코드로 동작%>
+    <h2> That is an even number!</h2>
+    <% } else { %>
+    <h2> That is an odd number!</h2>
+    <% } %>
+    <h3>That number is <%= num % 2 === 0 ? 'EVEN' : 'ODD' %></h3>
+</body>
+
+</html>

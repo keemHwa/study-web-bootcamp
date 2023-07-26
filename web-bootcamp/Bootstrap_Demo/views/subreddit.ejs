@@ -1,0 +1,21 @@
+<%- include('partials/head')%>  <%# '-'를 사용하면 출력하려는 html이 escape(문자열 취급)되지 않는다. '='를 사용하면 괄호 안에 있는 콘텐츠를 문자 취급함 %>
+
+<%- include('partials/navbar')%>  
+
+<div class="container">
+
+    <h1>Browsing The <%= name %> subreddit</h1>
+    <h2><%= description %></h2>
+    <p><%=subscribers %> Total Subscribers</p>
+    <hr>
+
+    <% for(let post of posts) { %>
+    <article>
+        <p><%= post.title %> - <b><%=post.author %></b></p>
+        <% if(post.img) { %>
+        <img src="<%= post.img %>" alt="">
+        <% } %>
+    </article>
+    <% } %>
+</div>
+<%- include('partials/footer')%>
