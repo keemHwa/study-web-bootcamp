@@ -12,7 +12,7 @@ app.set('view engine', 'ejs');
 // EJS 지정, require 필요 X , views 폴더는 디폴트 디렉토리 
 // 위 코드만 있을 경우 view 폴더가 있는 디렉토리와 동일한 곳에서 애플리케이션을 열어야 동작한다. (실행했을 때의 디렉토리에서 view를 찾기에..)
 app.set('views', path.join(__dirname, '/views'));
-// views와 다른 디렉토리에서 호출해도 동작
+// views와 다른 디렉토리에서 호출해도 동작 (절대경로)
 // 이 파일이 있는 현재 디렉토리(__dirname)를 가져와서 /views를 붙여주는 것 (path.join)
 
 app.get('/', (req, res) => {
