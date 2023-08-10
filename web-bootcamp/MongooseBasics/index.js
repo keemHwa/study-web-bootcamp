@@ -28,14 +28,14 @@ const Movie = mongoose.model('Movie', movieSchema); // 주로 모델명과 변�
 // 모델의 단일 인스턴스를 생성하는 경우 save를 호출해서 데이터베이스에 저장해야 한다. 
 // 하지만 insertMany를 호출하면 기본적으로 MongoDB에 바로 연결되어 한 번에 많이 입력할 수 있음 
 
-Movie.insertMany([ 
-    { title: 'Amelie', year: 2001, score: 8.3, rating: 'R' },
-    { title: 'Alien', year: 1979, score: 8.1, rating: 'R' },
-    { title: 'The Iron Giant', year: 1999, score: 7.5, rating: 'PG' },
-    { title: 'Stand By Me', year: 1986, score: 8.6, rating: 'R' },
-    { title: 'Moonrise Kingdom', year: 2012, score: 7.3, rating: 'PG-13' }
-])
-    .then(data => {
-        console.log("IT WORKED!")
-        console.log(data);
-    }) 
+// Movie.insertMany([ 
+//     { title: 'Amelie', year: 2001, score: 8.3, rating: 'R' },
+//     { title: 'Alien', year: 1979, score: 8.1, rating: 'R' },
+//     { title: 'The Iron Giant', year: 1999, score: 7.5, rating: 'PG' },
+//     { title: 'Stand By Me', year: 1986, score: 8.6, rating: 'R' },
+//     { title: 'Moonrise Kingdom', year: 2012, score: 7.3, rating: 'PG-13' }
+// ])
+//     .then(data => {
+//         console.log("IT WORKED!")
+//         console.log(data);
+//     }) 

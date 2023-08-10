@@ -60,7 +60,7 @@ app.get('/comments/new', (req, res) => {
 app.post('/comments', (req, res) => {
     const { username, comment } = req.body; 
     comments.push({ username, comment, id: uuid() })
-    res.redirect('/comments'); // response header location에 redirect 경로가 포함되어 브라우저가 이 경로로 새 request를 한다. 
+    res.redirect('/comments'); // response header location에 redirect 경로가 포함되어 브라우저가 이 경로로 새 request를 한다.
 })
 // *******************************************
 // SHOW - details about one particular comment
