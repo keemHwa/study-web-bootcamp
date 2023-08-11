@@ -20,4 +20,14 @@ personSchema.virtual('fullName').get(function () {     // 가상 특성에 대�
     return `${this.first} ${this.last}`
 })
 
+personSchema.pre('save', async function () {
+    this.first = '오마쾃'
+    this.last = '와우';
+    console.log("저장전");
+})
+
+personSchema.post('save', async function() {
+    console.log( "저장후")
+})
+
 const Person = new mongoose.model('Person', personSchema);
