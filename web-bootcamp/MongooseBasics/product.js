@@ -48,16 +48,19 @@ productSchema.methods.greet = function () { // 인스턴스 메서드 ( 중복�
 
 productSchema.methods.toggleOnSale = function () {
     this.onSale = !this.onSale;
-    return this.save(); // save 후 thenable 반환 thenable은 promise 동작해서 다른곳에서 기다릴 수있다. 
-    
+    return this.save(); // save 후 thenable 반환 thenable은 promise 동작해서 다른곳에서 기다릴 수있다.     
 }
 
 productSchema.methods.addCategory = function (newDog) {
     this.categoried.push(newDog);
     return this.save();
-    
 }
 
+
+
+productSchema.statics.fireSale = function () { // 정적 메서드 ( 항목을 찾거나 업데이트하거나 생성하고 또 삭제할 수 있는 더 편하고 유용한 방식) 
+    return this.updateMany({}, { onSale: true, price: 0 }) //여기서 this는 new로 생성된 개별 인스턴스가 아니라 Product 모델 클래스 자체를 말한다.  (적용시 모든 Product 모델에 적용 ) 
+}
 
 const Product = mongoose.model('Product', productSchema); 
 
@@ -71,7 +74,9 @@ const findProudct = async () => {
     console.log(foundProudct);
 }
 
-findProudct();
+Product.fireSale().then(res => {console.log(res);})
+
+// findProudct();
 
 // const bike = new Product({ name: 'Mountain Bike', price: 599 })
 // const bike = new Product({ name: 'Mountain Bike', price:'HELL' })// Error: Product validation failed: price: Cast to Number failed for value "HELL" (type string) at path "price"
