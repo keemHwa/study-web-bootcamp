@@ -39,8 +39,17 @@ app.set('views', path.join(__dirname, 'views')); //  경로
 
 
 app.get('/products', async (req, res) => {
-    const products = await Product.find({})
-    res.render('products/index', { products }) // ./products/index.ejs와 같다 
+    const { category } = req.query;
+    if (category) {
+        const products = await Product.find({ category });
+        res.render('products/index', { products, category }); // ./products/index.ejs와 같다 
+    } else {
+        const products = await Product.find({})
+        res.render('products/index', { products, category: 'All' }); // ./products/index.ejs와 같다 
+    }
+    
+    // Assignment to constant variable. :: const는 재할당을 허용하지 않는다 
+   
 })
 
 app.get('/products/new', (req, res) => {
