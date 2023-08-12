@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상세페이지</title>
+</head>
+<body>
+    <h1><%= campGroundDetail.title %></h1>
+    <h2><%= campGroundDetail.location %></h2>
+    <p><a href="/campGrounds/<%= campGroundDetail._id %>/edit">수정</a></p>
+    <p>
+        <form action="/campGrounds/<%= campGroundDetail._id %>?_method=DELETE" method="POST">
+            <button>삭제</button>
+        </form>
+    </p>
+    <footer>
+        <a href="/campGrounds">목록</a>
+    </footer>
+
+</body>
+</html>

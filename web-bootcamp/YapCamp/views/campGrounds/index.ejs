@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>캠핑장</title>
+</head>
+<body>
+    <h1> 모든 캠핌장 </h1>
+    <div>
+        <a href="/campGrounds/new">캠핑장 등록</a>
+    </div>
+    <ul>
+        <% for( let campGround of campGrounds ) { %>
+            <li><a href="/campGrounds/<%= campGround._id%>"><%= campGround.title %></a></li>
+        <% } %>
+    </ul>
+</body>
+</html>
