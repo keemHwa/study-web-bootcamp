@@ -10,7 +10,7 @@ const app = express();
 //To parse form data(=payload) in POST request body :
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 // To parse incoming JSON in POST request body:
-app.use(express.json()) // for parsing application/json
+app.use(express.json()) // for parsing application/json (모든 요청의 body를)
 // To 'fake' put/patch/delete requests 
 app.use(methodOverride('_method')) // overrid with POST having ?_method= (쿼리문자열에서 가져온다)
     // <form method="POST" action="/comments/<%=comment.id%>?_method=PATCH"> 
