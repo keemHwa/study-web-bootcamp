@@ -21,8 +21,14 @@ const seedDB = async () => {
     
     await campGround.deleteMany({});
     for (let info of campGroundInfo) {
-        const { name, brief, city, major } = info;
-        const c = new campGround({ title: name, location:  `${city} ${major}`, description: brief});
+        const { name, brief, city, major, priceStartFrom } = info;
+        const c = new campGround({
+            title: name,
+            location: `${city} ${major}`,
+            price: priceStartFrom,
+            description: brief,
+            image: 'https://source.unsplash.com/collection/483251'
+        });
         await c.save();
     }
 }

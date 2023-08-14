@@ -1,8 +1,9 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
-const campGround = require('./models/campGround');
+const ejsMate = require('ejs-mate');
 const methodOverride = require('method-override');
+const campGround = require('./models/campGround');
 
 async function main() {
     await mongoose.connect('mongodb://127.0.0.1:27017/yapCamp');
@@ -21,6 +22,7 @@ main()
 
 const app = express();
 
+app.engine('ejs', ejsMate); // ejs 파일을 실행하거나 파싱할 때 쓰이는 Express default engine 대신 이걸 사용하라고 지정 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 

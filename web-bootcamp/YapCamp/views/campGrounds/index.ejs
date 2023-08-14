@@ -1,19 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>캠핑장</title>
-</head>
-<body>
-    <h1> 모든 캠핌장 </h1>
-    <div>
-        <a href="/campGrounds/new">캠핑장 등록</a>
+<% layout('/layouts/boilerPlate') %>  <%# 해당 콘텐츠들을 layout이 전부 찾아내 boilerplate body에 전달한다.  %>
+<h1> 모든 캠핌장</h1>
+<div>
+    <a href="/campGrounds/new">캠핑장 등록</a>
+</div>
+<% for( let campGround of campGrounds ) { %>
+    <div class="card" mb-3>
+        <div class="row">
+            <div class="col-md-4">
+                <img src="<%= campGround.image %>" class="card-img-top img-fluid" alt="...">
+            </div>    
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title"><%= campGround.title %></h5>
+                    <h6 class="card-subtitle mb-2 text-body-secondary"><%= campGround.location %></h6>
+                    <p class="card-text"><%= campGround.description %></p>
+                    <a href="/campGrounds/<%= campGround._id%>" class="btn btn-primary">상세보기</a>
+        
+                </div>
+            </div>
+        </div>
     </div>
-    <ul>
-        <% for( let campGround of campGrounds ) { %>
-            <li><a href="/campGrounds/<%= campGround._id%>"><%= campGround.title %></a></li>
-        <% } %>
-    </ul>
-</body>
-</html>
+<% } %>
