@@ -2,31 +2,32 @@
 <div class="row">
     <h1 class="text-center">캠핑장 정보 수정</h1>
     <div class="col-6 offset-3">
-        <form action ="/campGrounds" method="POST">
+        <form action ="/campGrounds" method="POST" novalidate class="needs-validation">
             <div class="mb-3">
                 <label class="form-label" for="title">이름</label>
-                <input class="form-control" type="text" id="title" name="campGround[title]" value="<%= campGroundDetail.title %>">  
+                <input class="form-control" type="text" id="title" name="campGround[title]" value="<%= campGroundDetail.title %>" required>  
+                <div class="valid-feedback"></div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="location">위치</label>
-                <input class="form-control" type="text" id="location" name="campGround[location]" value="<%= campGroundDetail.location %>">
+                <input class="form-control" type="text" id="location" name="campGround[location]" value="<%= campGroundDetail.location %>" required>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="image">이미지</label>
-                <input class="form-control" type="text" id="image" name="campGround[image]" value="<%= campGroundDetail.image %>">
+                <input class="form-control" type="text" id="image" name="campGround[image]" value="<%= campGroundDetail.image %>" required>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="price">가격</label>
                 <div class="input-group">
                     <input type="text" class="form-control" id="price" placeholder="0" aria-label="price"
-                        aria-describedby="price-label" name="campGround[price]" value="<%= campGroundDetail.price %>">
+                        aria-describedby="price-label" name="campGround[price]" value="<%= campGroundDetail.price %>" required> 
                     <span class="input-group-text" id="price-label">원</span>
                 </div>
             </div>
 
             <div class="mb-3">
                 <label class="form-label" for="description">설명</label>
-                <textarea class="form-control" type="text" id="description" name="campGround[description]"><%= campGroundDetail.description %></textarea>
+                <textarea class="form-control" type="text" id="description" name="campGround[description]" required><%= campGroundDetail.description %></textarea>
             </div>
             <div class="mb-3">
                 <button class="btn btn-info">수정</button>

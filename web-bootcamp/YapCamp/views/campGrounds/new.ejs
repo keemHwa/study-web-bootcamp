@@ -3,31 +3,32 @@
 <div class="row">
     <h1 class="text-center">캠핑장 등록</h1>
     <div class="col-6 offset-3">
-        <form action ="/campGrounds" method="POST">
+        <form action ="/campGrounds" method="POST" novalidate class="needs-validation"> <!-- 브라우저에서 유효성 검사를 하지말고 부트스트랩이 하도록 novalidate 지정 -->
             <div class="mb-3">
                 <label class="form-label" for="title">이름</label>
-                <input class="form-control" type="text" id="title" name="campGround[title]">  <!--post 요청시 req.body에 내용을 그룹화함 ex ) {"campGround":{"title":"erer","location":"erer"}}-->
+                <input class="form-control" type="text" id="title" name="campGround[title]" required>  <!--post 요청시 req.body에 내용을 그룹화함 ex ) {"campGround":{"title":"erer","location":"erer"}}-->
+                <div class="valid-feedback">완료</div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="location">위치</label>
-                <input class="form-control" type="text" id="location" name="campGround[location]">
+                <input class="form-control" type="text" id="location" name="campGround[location]" required>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="image">이미지</label>
-                <input class="form-control" type="text" id="image" name="campGround[image]">
+                <input class="form-control" type="text" id="image" name="campGround[image]" required>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="price">가격</label>
                 <div class="input-group">
                     <input type="text" class="form-control" id="price" placeholder="0" aria-label="price"
-                        aria-describedby="price-label" name="campGround[price]">
+                        aria-describedby="price-label" name="campGround[price]" required>
                     <span class="input-group-text" id="price-label">원</span>
                 </div>
             </div>
 
             <div class="mb-3">
                 <label class="form-label" for="description">설명</label>
-                <textarea class="form-control" type="text" id="description" name="campGround[description]"></textarea>
+                <textarea class="form-control" type="text" id="description" name="campGround[description]" required></textarea>
             </div>
             <div class="mb-3">
                 <button class="btn btn-success">등록</button>

@@ -3,6 +3,8 @@ const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 const methodOverride = require('method-override');
+const expressError = require('./utils/expressError');
+const catchAsync = require('./utils/catchAsync');
 const campGround = require('./models/campGround');
 
 async function main() {
@@ -47,22 +49,24 @@ app.get('/campGrounds/new', (req, res) => {
     res.render('campGrounds/new')  // 제너릭 패턴 생성 관련 순서 주의! 아래의 :/id 라우터 다음에 있으면 new를 id로 인식한다.
 })
 
-app.post('/campGrounds', async (req, res) => {
+app.post('/campGrounds', catchAsync(async (req, res, next) => {
     //res.send(req.body); // 파싱을 해주지 않으면 req.body가 비어있다.
     const newCampGound = new campGround(req.body.campGround);
     await newCampGound.save();
     res.redirect(`/campGrounds/${newCampGound._id}`)
-})
+}))
 
-app.get('/campGrounds/:id', async (req, res) => {
+
+app.get('/campGrounds/:id', catchAsync(async (req, res, next) => {
     const campGroundDetail = await campGround.findById(req.params.id);
-    res.render('campGrounds/show', { campGroundDetail }) 
-})
+    res.render('campGrounds/show', { campGroundDetail })
+}))
 
-app.get('/campGrounds/:id/edit', async (req, res) => {
+app.get('/campGrounds/:id/edit', catchAsync(async (req, res, next) => {
     const campGroundDetail = await campGround.findById(req.params.id);
     res.render('campGrounds/edit', { campGroundDetail }) 
-})
+}))
+
 
 app.get('/makeCampGround', async (req, res) => {
     const camp = new campGround({ title:'밤별생각 낮달이야기 캠핑장', description:'행복한 쉼터 밤별생각낮달이야기', price :'75000'})
@@ -70,20 +74,23 @@ app.get('/makeCampGround', async (req, res) => {
     res.send(camp)
 })
 
-app.put('/campGrounds/:id', async (req, res) => {
+app.put('/campGrounds/:id', catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const campground = await campGround.findByIdAndUpdate(id, { ...req.body.campGround }); // 분해하여 전달 
     res.redirect(`/campGrounds/${campground._id}`)
-})
+}))
 
-app.delete('/campGrounds/:id', async (req, res) => { // 삭제는 post로 해도 된다.
+app.delete('/campGrounds/:id', catchAsync(async (req, res,next) => { // 삭제는 post로 해도 된다.
     const { id } = req.params.id;
     // console.log(req.params.id); 왜 구조 분해를 해야하는지는 모르겠지만 ..
     // await campGround.findByIdAndDelete(req.params.id); 동작 
     await campGround.findByIdAndDelete(id);
     res.redirect('/campGrounds')
-})
+}))
 
+app.use((err, req, res, next) => {
+    res.send("오류 발생");
+})
 app.listen(3000, () => {
     console.log("완!");
 });
