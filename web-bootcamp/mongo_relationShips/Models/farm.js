@@ -1,4 +1,6 @@
 
+// One to Many 관계
+
 const mongoose = require('mongoose');
 const { Schema } = mongoose; // 자주 쓰는 것은 별도 변수로 뽑아내기 
 
