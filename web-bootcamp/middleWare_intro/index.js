@@ -46,7 +46,7 @@ const verifyPassword = (req, res, next) => { // 비밀번호 설정 데모
 }
 
 app.get('/', (req, res) => {
-    console.log(`REQUEST DATE: ${req.requestTime}`)
+    console.log(`REQUEST DATE: ${req.requestTime}`) 
     res.send('HOME PAGE!')
 })
 

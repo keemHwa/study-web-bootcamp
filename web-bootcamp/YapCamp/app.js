@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
+const { campGroundSchema } = require('./validateSchema'); // module.exports.campGroundSchema = ~ 
 const methodOverride = require('method-override');
 const expressError = require('./utils/expressError');
 const catchAsync = require('./utils/catchAsync');
@@ -35,6 +36,17 @@ app.use(express.urlencoded({ extended: true })) // for parsing application/x-www
 app.use(methodOverride('_method')) // npm i method-override 설치 후 사용, 쿼리문자열에서 method를 가져온다. form에서 get, post이외 사용가능한다.
     // 여기선 _method라고 지정했기에 쿼리문자열 _method 값을 가져온다. 
 
+    
+const validateCampGround = (req, res, next) => {
+    const { error } = campGroundSchema.validate(req.body);
+    console.dir(error);
+    if (error) {
+        const message = error.details.map(el => el.message).join(',') //Map은 콜백 함수를 수령해서 배열의 요소당 1번씩 실행하여 새로운 배열 생성 
+        throw new expressError(400, message);
+    } else {
+        next() // 다음 미들웨어나 핸들러 실행 
+    }
+}
 
 app.get('/', (req, res) => {
     res.render('home')
@@ -49,7 +61,9 @@ app.get('/campGrounds/new', (req, res) => {
     res.render('campGrounds/new')  // 제너릭 패턴 생성 관련 순서 주의! 아래의 :/id 라우터 다음에 있으면 new를 id로 인식한다.
 })
 
-app.post('/campGrounds', catchAsync(async (req, res, next) => {
+app.post('/campGrounds', validateCampGround,catchAsync(async (req, res, next) => {
+    //if(!req.body.campGround) throw new expressError(400,'유효하지않은 요청입니다.')
+    
     //res.send(req.body); // 파싱을 해주지 않으면 req.body가 비어있다.
     const newCampGound = new campGround(req.body.campGround);
     await newCampGound.save();
@@ -74,7 +88,7 @@ app.get('/makeCampGround', async (req, res) => {
     res.send(camp)
 })
 
-app.put('/campGrounds/:id', catchAsync(async (req, res, next) => {
+app.put('/campGrounds/:id', validateCampGround, catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const campground = await campGround.findByIdAndUpdate(id, { ...req.body.campGround }); // 분해하여 전달 
     res.redirect(`/campGrounds/${campground._id}`)
@@ -88,8 +102,17 @@ app.delete('/campGrounds/:id', catchAsync(async (req, res,next) => { // 삭제�
     res.redirect('/campGrounds')
 }))
 
+
+app.all('*', (req, res, next) => { // 위 라우터들 중 일치하는 요청이 없을 경우 동작
+    next(new expressError(404, '페이지를 찾을 수 없습니다.'));
+})
+
 app.use((err, req, res, next) => {
-    res.send("오류 발생");
+    // const { statusCode = 500, message = "오류가 발생했습니다." } = err; // 분해 후 메세지를 지정해주는거라서 객체에 update 되지 않음  
+    const { statusCode = 500 } = err;
+    if(!err.message) err.message = '오류가 발생했습니다. '
+    res.status(statusCode).render('error', { err });
+    
 })
 app.listen(3000, () => {
     console.log("완!");
