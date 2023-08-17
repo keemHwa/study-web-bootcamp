@@ -81,15 +81,14 @@ app.post('/farms/:id/products', async(req, res) => {
     product.farm = farm;
     await farm.save();
     await product.save();
-    res.redirect(`farms/${id}`);
+    res.redirect(`/farms/${id}`);
 })
 
 
 app.delete('/farms/:id', async (req, res) => { // 양방향 저장일 시 삭제
     const { id } = req.params;
-    // 수동으로 해당 데이터를 찾아 삭제하는 것보다 미들웨어를 사용하는것이 연결된 데이터가 많을 때 좋다. 
-    //await Product.findByIdAndDelete() //
-    //await Farm.findByIdAndDelete(id); 
+    await Farm.findByIdAndDelete(id); 
+    // 수동으로 연관 데이터를 찾아 삭제하는 것보다 미들웨어를 사용하는것이 연결된 데이터가 많을 때 좋다. 
     res.send('delete');
     
 })
