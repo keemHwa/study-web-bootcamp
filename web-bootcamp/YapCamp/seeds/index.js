@@ -27,7 +27,8 @@ const seedDB = async () => {
             location: `${city} ${major}`,
             price: priceStartFrom,
             description: brief,
-            image: 'https://source.unsplash.com/collection/483251'
+            image: 'https://source.unsplash.com/collection/483251',
+            author:'64e3498a7e3ffce4e9a5183f'
         });
         await c.save();
     }

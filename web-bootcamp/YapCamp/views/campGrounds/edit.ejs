@@ -2,7 +2,8 @@
 <div class="row">
     <h1 class="text-center">캠핑장 정보 수정</h1>
     <div class="col-6 offset-3">
-        <form action ="/campGrounds" method="POST" novalidate class="needs-validation">
+        <form action ="/campGrounds/<%= campGroundDetail._id %>?_method=PUT" method="POST" novalidate class="needs-validation" enctype="multipart/form-data">
+            <!-- default html form file upload X , enctype을 multipart/form-data로 지정해야함  -->
             <div class="mb-3">
                 <label class="form-label" for="title">이름</label>
                 <input class="form-control" type="text" id="title" name="campGround[title]" value="<%= campGroundDetail.title %>" required>  
@@ -12,10 +13,11 @@
                 <label class="form-label" for="location">위치</label>
                 <input class="form-control" type="text" id="location" name="campGround[location]" value="<%= campGroundDetail.location %>" required>
             </div>
-            <div class="mb-3">
+            <input type="file" name="image" id="image" multiple>
+            <!-- <div class="mb-3">
                 <label class="form-label" for="image">이미지</label>
                 <input class="form-control" type="text" id="image" name="campGround[image]" value="<%= campGroundDetail.image %>" required>
-            </div>
+            </div> -->
             <div class="mb-3">
                 <label class="form-label" for="price">가격</label>
                 <div class="input-group">

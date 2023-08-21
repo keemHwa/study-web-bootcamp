@@ -1,8 +1,13 @@
+if (process.env.NODE_DEV !== "production") {
+    require('dotenv').config(); // 이름이 .env 파일을 최상이 디렉토리에서 찾는다.
+}
+
+console.log(process.env.SECRET); // 파싱 후 process.env에 전부 넣는다. 
+
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
-const { campGroundSchema } = require('./validateSchema'); // module.exports.campGroundSchema = ~ 
 const methodOverride = require('method-override');
 const expressError = require('./utils/expressError');
 const catchAsync = require('./utils/catchAsync');
@@ -11,10 +16,12 @@ const session = require('express-session')
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
-const { isLoggedIn } = require('./middleware'); // [Function (anonymous)]
-// const isLoggedIn = require('./middleware'); // { isLoggedIn: [Function (anonymous)] }
-const { storeReturnTo } = require('./middleware');
+const userRoutes = require('./routes/users');
+const campGroundRoutes = require('./routes/campGrounds');
 
+
+const { isLoggedIn,storeReturnTo,isAuthor,validateCampGround } = require('./middleware'); // [Function (anonymous)]
+// const isLoggedIn = require('./middleware'); // { isLoggedIn: [Function (anonymous)] }
 
 async function main() {
     await mongoose.connect('mongodb://127.0.0.1:27017/yapCamp');
@@ -71,17 +78,6 @@ passport.deserializeUser(User.deserializeUser());
     // 세션이 유지되는 동안, 모든 요청에서 deserializeUser 함수는 세션에 저장된 사용자 식별자를 기반으로 사용자 정보를 검색
     // 이 함수는 사용자 데이터베이스 또는 다른 저장소를 쿼리하여 해당 사용자의 전체 정보를 가져온다(세션유지용)
 
-const validateCampGround = (req, res, next) => {
-    const { error } = campGroundSchema.validate(req.body);
-    console.dir(error);
-    if (error) {
-        const message = error.details.map(el => el.message).join(',') //Map은 콜백 함수를 수령해서 배열의 요소당 1번씩 실행하여 새로운 배열 생성 
-        throw new expressError(400, message);
-    } else {
-        next() // 다음 미들웨어나 핸들러 실행 
-    }
-}
-
 app.use((req, res, next) => {
     // res.locals 
     // Express.js의 res.locals 로 요청 - 응답 사이클에서 데이터를 애플리케이션에 전달할 수 있는 오브젝트
@@ -94,90 +90,15 @@ app.get('/', (req, res) => {
     res.render('home')
 })
 
-app.get('/fakeUser', async (req, res,next) => {
-    try {
-        const user = new User({ email: 'test2@gmail.com', username: 'test2' });
-        const newUser = await User.register(user, '1234'); //  User.register은 전체 사용자 모델 인스턴스와 암호를 취하고 암호를 솔트,해시(Pbkdf2)하고 저장한다.
-        req.logIn(newUser, err => { // 회원가입후 로그인 상태 유지
-            if (err) return next(err); 
-            res.redirect('/campGrounds');
-        }); 
-       
-    } catch (e) {
-        res.send(e.message); // passport-local-mongoose > register username 중복 체크 O
-    }
-})
+app.use('/', userRoutes);
+app.use('/campGrounds', campGroundRoutes);
 
-app.get('/login', (req, res) => {
-    res.render('./user/login')
-})
+// app.get('/makeCampGround', async (req, res) => {
+//     const camp = new campGround({ title:'밤별생각 낮달이야기 캠핑장', description:'행복한 쉼터 밤별생각낮달이야기', price :'75000'})
+//     await camp.save();
+//     res.send(camp)
+// })
 
-app.post('/login',
-    storeReturnTo,     // use the storeReturnTo middleware to save the returnTo value from session to res.locals
-    passport.authenticate('local', { failureRedirect: '/login' }), (req, res) => {  // passport에서 제공하는 local 전략 미들웨어사용
-    const redirectUrl = res.locals.returnTo || '/campGrounds';
-    res.redirect(redirectUrl)
-})
-
-app.get('/logout', (req, res) => {
-    req.logOut(function (err) { //passport 메서드 
-        if (err) {
-            return next(err);
-        }
-        res.redirect('/campgrounds');
-    });
-})
-
-
-app.get('/campGrounds', async (req, res) => {
-    const campGrounds = await campGround.find({});
-    res.render('campGrounds/index', { campGrounds })
-})
-
-app.get('/campGrounds/new', isLoggedIn, (req, res) => { // isLoggedIn 미들웨어를 통한 로그인 여부 확인 추가 
-    res.render('campGrounds/new')  // 제너릭 패턴 생성 관련 순서 주의! 아래의 :/id 라우터 다음에 있으면 new를 id로 인식한다.
-})
-
-app.post('/campGrounds', validateCampGround,catchAsync(async (req, res, next) => {
-    //if(!req.body.campGround) throw new expressError(400,'유효하지않은 요청입니다.')
-    
-    //res.send(req.body); // 파싱을 해주지 않으면 req.body가 비어있다.
-    const newCampGound = new campGround(req.body.campGround);
-    await newCampGound.save();
-    res.redirect(`/campGrounds/${newCampGound._id}`)
-}))
-
-
-app.get('/campGrounds/:id', catchAsync(async (req, res, next) => {
-    const campGroundDetail = await campGround.findById(req.params.id);
-    res.render('campGrounds/show', { campGroundDetail })
-}))
-
-app.get('/campGrounds/:id/edit', catchAsync(async (req, res, next) => {
-    const campGroundDetail = await campGround.findById(req.params.id);
-    res.render('campGrounds/edit', { campGroundDetail }) 
-}))
-
-
-app.get('/makeCampGround', async (req, res) => {
-    const camp = new campGround({ title:'밤별생각 낮달이야기 캠핑장', description:'행복한 쉼터 밤별생각낮달이야기', price :'75000'})
-    await camp.save();
-    res.send(camp)
-})
-
-app.put('/campGrounds/:id', validateCampGround, catchAsync(async (req, res, next) => {
-    const { id } = req.params;
-    const campground = await campGround.findByIdAndUpdate(id, { ...req.body.campGround }); // 분해하여 전달 
-    res.redirect(`/campGrounds/${campground._id}`)
-}))
-
-app.delete('/campGrounds/:id', catchAsync(async (req, res,next) => { // 삭제는 post로 해도 된다.
-    const { id } = req.params.id;
-    // console.log(req.params.id); 왜 구조 분해를 해야하는지는 모르겠지만 ..
-    // await campGround.findByIdAndDelete(req.params.id); 동작 
-    await campGround.findByIdAndDelete(id);
-    res.redirect('/campGrounds')
-}))
 
 
 app.all('*', (req, res, next) => { // 위 라우터들 중 일치하는 요청이 없을 경우 동작

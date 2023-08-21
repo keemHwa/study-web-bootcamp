@@ -30,7 +30,7 @@ app.use(methodOverride('_method'))
 
 const categories = ['fruit', 'vegetable', 'dairy'];
 
-function wrapAsync(fn) { // 라우터 작성시 함수가 들어가야 하기에 retrun function ~ 식으로 사용한다.
+function wrapAsync(fn) { // 라우트 작성시 함수가 들어가야 하기에 retrun function ~ 식으로 사용한다.
     return function (req, res, next) { //return function 이 함수는 (req, res, next)를 가지는데 (req, res, next)가 필요한 이유는 fn 함수에 이걸 전달해야 하기 때문
         fn(req, res, next).catch(e => next(e))
     }
