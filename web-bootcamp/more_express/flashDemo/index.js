@@ -38,11 +38,11 @@ app.use(express.urlencoded({ extended: true }));
 // FARM ROUTES
 
 app.use((req, res, next) => { // 모든 요청에 대한 응답에 변수를 설정=> messages의 키 값을 렌더링하는 모든 페이지에서 접근
-    res.locals.messages = req.flash('success'); // 개선된 방법으로 플래시 메세지 전달 
+    res.locals.sucess = req.flash('success'); // 개선된 방법으로 플래시 메세지 전달 
+    res.locals.error = req.flash('error'); // 개선된 방법으로 플래시 메세지 전달 
     // res.locals
     // 이 속성을 사용하여 res.render로 렌더링된 템플릿에서 액세스할 수 있는 변수를 설정할 수 있다.
     // res.locals에 설정된 변수는 단일 요청 - 응답 주기 내에서만 사용할 수 있으며 요청 간에 공유되지 않는다..
-    next();
 })
 
 app.get('/farms', async (req, res) => {
@@ -54,6 +54,10 @@ app.get('/farms/new', (req, res) => {
 })
 app.get('/farms/:id', async (req, res) => {
     const farm = await Farm.findById(req.params.id).populate('products');
+    if (!farm) {
+        req.flash('error', ' X X ');
+        return res.redirect('/farms')
+    }
     res.render('farms/show', { farm })
 })
 
