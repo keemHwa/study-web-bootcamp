@@ -13,7 +13,7 @@ const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 const { isLoggedIn } = require('./middleware'); // [Function (anonymous)]
 // const isLoggedIn = require('./middleware'); // { isLoggedIn: [Function (anonymous)] }
-
+const { storeReturnTo } = require('./middleware');
 
 
 async function main() {
@@ -82,15 +82,27 @@ const validateCampGround = (req, res, next) => {
     }
 }
 
+app.use((req, res, next) => {
+    // res.locals 
+    // Express.js의 res.locals 로 요청 - 응답 사이클에서 데이터를 애플리케이션에 전달할 수 있는 오브젝트
+    // 이 오브젝트로 저장한 변수는 템플릿 및 다른 미들웨어 함수가 액세스할 수 있다. 
+    res.locals.currentUser = req.user; //  Passport에 의해 세션의 직렬화된 사용자 정보를 Passport가 역직렬화해서 req.user에 해당 데이터를 담는다.
+    next();
+   
+})
 app.get('/', (req, res) => {
     res.render('home')
 })
 
-app.get('/fakeUser', async (req, res) => {
+app.get('/fakeUser', async (req, res,next) => {
     try {
-        const user = new User({ email: 'test1@gmail.com', username: 'test1' });
-        const newUser = await User.register(user, 'passwordtest'); //  User.register은 전체 사용자 모델 인스턴스와 암호를 취하고 암호를 솔트,해시(Pbkdf2)하고 저장한다.
-        res.send(newUser);
+        const user = new User({ email: 'test2@gmail.com', username: 'test2' });
+        const newUser = await User.register(user, '1234'); //  User.register은 전체 사용자 모델 인스턴스와 암호를 취하고 암호를 솔트,해시(Pbkdf2)하고 저장한다.
+        req.logIn(newUser, err => { // 회원가입후 로그인 상태 유지
+            if (err) return next(err); 
+            res.redirect('/campGrounds');
+        }); 
+       
     } catch (e) {
         res.send(e.message); // passport-local-mongoose > register username 중복 체크 O
     }
@@ -100,8 +112,11 @@ app.get('/login', (req, res) => {
     res.render('./user/login')
 })
 
-app.post('/login', passport.authenticate('local', { failureRedirect: '/login'}), (req, res) => {  // passport에서 제공하는 local 전략 미들웨어사용
-    res.redirect('/campGrounds')
+app.post('/login',
+    storeReturnTo,     // use the storeReturnTo middleware to save the returnTo value from session to res.locals
+    passport.authenticate('local', { failureRedirect: '/login' }), (req, res) => {  // passport에서 제공하는 local 전략 미들웨어사용
+    const redirectUrl = res.locals.returnTo || '/campGrounds';
+    res.redirect(redirectUrl)
 })
 
 app.get('/logout', (req, res) => {
