@@ -7,6 +7,14 @@ const methodOverride = require('method-override');
 const expressError = require('./utils/expressError');
 const catchAsync = require('./utils/catchAsync');
 const campGround = require('./models/campGround');
+const session = require('express-session')
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require('./models/user');
+const { isLoggedIn } = require('./middleware'); // [Function (anonymous)]
+// const isLoggedIn = require('./middleware'); // { isLoggedIn: [Function (anonymous)] }
+
+
 
 async function main() {
     await mongoose.connect('mongodb://127.0.0.1:27017/yapCamp');
@@ -36,7 +44,33 @@ app.use(express.urlencoded({ extended: true })) // for parsing application/x-www
 app.use(methodOverride('_method')) // npm i method-override 설치 후 사용, 쿼리문자열에서 method를 가져온다. form에서 get, post이외 사용가능한다.
     // 여기선 _method라고 지정했기에 쿼리문자열 _method 값을 가져온다. 
 
-    
+const sessionConfig = {
+    secret: 'thisshouldbeabettersecret!',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7
+    }
+};
+
+app.use(session(sessionConfig))
+
+app.use(passport.initialize());
+app.use(passport.session()); // express에서 사용할 시 express-session이 있어야한다.
+
+passport.use(new LocalStrategy(User.authenticate()));
+    // passport가 LocalStrategy(사용자 이름-비밀 매커니즘 전략)를 사용하도록 하며 인증 메서드(authenticate) 추가.
+    // User.authenticate() Generates a function that is used in Passport's LocalStrategy
+
+// To maintain a login session, Passport serializes and deserializes user information to and from the session
+passport.serializeUser(User.serializeUser()); 
+    // 사용자가 로그인하면, serializeUser 함수는 사용자의 고유한 식별자 (예: 사용자 ID)를 세션에 저장
+passport.deserializeUser(User.deserializeUser()); 
+    // 세션이 유지되는 동안, 모든 요청에서 deserializeUser 함수는 세션에 저장된 사용자 식별자를 기반으로 사용자 정보를 검색
+    // 이 함수는 사용자 데이터베이스 또는 다른 저장소를 쿼리하여 해당 사용자의 전체 정보를 가져온다(세션유지용)
+
 const validateCampGround = (req, res, next) => {
     const { error } = campGroundSchema.validate(req.body);
     console.dir(error);
@@ -52,12 +86,40 @@ app.get('/', (req, res) => {
     res.render('home')
 })
 
+app.get('/fakeUser', async (req, res) => {
+    try {
+        const user = new User({ email: 'test1@gmail.com', username: 'test1' });
+        const newUser = await User.register(user, 'passwordtest'); //  User.register은 전체 사용자 모델 인스턴스와 암호를 취하고 암호를 솔트,해시(Pbkdf2)하고 저장한다.
+        res.send(newUser);
+    } catch (e) {
+        res.send(e.message); // passport-local-mongoose > register username 중복 체크 O
+    }
+})
+
+app.get('/login', (req, res) => {
+    res.render('./user/login')
+})
+
+app.post('/login', passport.authenticate('local', { failureRedirect: '/login'}), (req, res) => {  // passport에서 제공하는 local 전략 미들웨어사용
+    res.redirect('/campGrounds')
+})
+
+app.get('/logout', (req, res) => {
+    req.logOut(function (err) { //passport 메서드 
+        if (err) {
+            return next(err);
+        }
+        res.redirect('/campgrounds');
+    });
+})
+
+
 app.get('/campGrounds', async (req, res) => {
     const campGrounds = await campGround.find({});
     res.render('campGrounds/index', { campGrounds })
 })
 
-app.get('/campGrounds/new', (req, res) => {
+app.get('/campGrounds/new', isLoggedIn, (req, res) => { // isLoggedIn 미들웨어를 통한 로그인 여부 확인 추가 
     res.render('campGrounds/new')  // 제너릭 패턴 생성 관련 순서 주의! 아래의 :/id 라우터 다음에 있으면 new를 id로 인식한다.
 })
 
