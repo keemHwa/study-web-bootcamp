@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useState,useRef } from "react";
 
 const DiaryEditor = () => {
+
+    const authorInput = useRef(); //React.MutableRefObject를 반환하는데 html dom elemte에 접근 할 수있게 해준다. 
+    const contentInput = useRef();
 
     const [state, setState] = useState({
         author: '',
@@ -21,19 +24,38 @@ const DiaryEditor = () => {
 
     const handleChangeSubmit = () => {
         console.log(state);
+        if (state.author.length < 1) {
+            // alert('작성자는 최소 1글자 이상 입력해주세요.'); // alert 을 띄우는건 좋지 못한 ux 경험 
+            authorInput.current.focus();
+            //authorInput.current = input 
+            return;
+        }
+
+        if (state.content.length < 5) {
+            contentInput.current.focus();
+            return;
+        }
     }
 
     return (
         <div className="DiaryEditor">
             <h2>오늘의 일기</h2>
             <div>
-                <input name='author' value={state.author} onChange={handleChangeState}/>
+                <input
+                    ref={authorInput}
+                    name='author'
+                    value={state.author}
+                    onChange={handleChangeState} />
             </div>
             <div>
-                <textarea name='content' value={state.content} onChange={handleChangeState} />
+                <textarea
+                    ref={contentInput}
+                    name='content'
+                    value={state.content}
+                    onChange={handleChangeState} />
             </div>
             <div>
-                <label for="emotion">오늘의 감정일기 : </label>
+                <label htmlFor="emotion">오늘의 감정일기 : </label>
                 <select name='emotion' id="emotion" value={state.emotion} onChange={handleChangeState}>
                     <option value={1}>1</option>
                     <option value={2}>2</option>
