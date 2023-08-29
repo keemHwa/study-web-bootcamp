@@ -1,4 +1,4 @@
-import { useMemo, useState,useRef, useEffect } from 'react';
+import { useMemo, useState,useRef, useEffect, useCallback } from 'react';
 import './App.css';
 import DiaryEditor from './DiaryEditor';
 import DiaryList from './DiaryList';
@@ -33,8 +33,15 @@ function App() {
     getDate();  
   }, []); // mount, 컴포넌트 탄생시 실행
 
+ 
   // 리액트는 데이터가 단방향으로 흐르기때문에, data를 변경할 수 있는 setData를 밑으로 보내주어 data를 변경 할 수 있게 해야한다.
-  const onCreate = (author, content, emotion) => { 
+  const onCreate = useCallback(
+    (author, content, emotion) => { // useCallback을 쓰는 이유 : data 길이 상관없이 컴포넌트가 mount되는 시점에 한번만 생성해서, 이후 일기 삭제나 기타 동작 시 재생성 되지 않도록 하기위해  
+                                      // => 이후 data추가시 기존에 데이터는 사라지고 새로 추가한 데이터만 들어오는 이슈 발생 !
+                                          // 왜냐하면 생성 당시 data는 빈 배열(현재 data값을 가져오지 못함) 이기에 이후 onCreate시 빈배열에 data가 추가된다.
+                                          // 이걸 고치려면 dependency array에 data를 넣고 data가 변경 될 때 재생성하게끔 해야하는 딜레마에 빠진다. 
+                                          // 함수형 업데이트(상태변화 함수(set)에 함수를 전달) 를 사용하면 된다. ex) setData((data)=>...)
+    console.log("onCreate ! ! ");
     const create_date = new Date().getTime();
     const newItem = { // 단축 속성명 : 키와 값의 이름이 같을 경우 사용할 수있다.
       author, // author: author 
@@ -44,8 +51,9 @@ function App() {
       id: dataId.current
     }
     dataId.current += 1;
-    setData([newItem, ...data]); // 새 데이터 +  기존 데이터 전개
-  };
+    //setData([newItem, ...data]); // 새 데이터 +  기존 데이터 전개
+      setData((data) => [newItem, ...data]); // 최신의 state 인자로 가져오게된다. 
+  },[]);
 
   const onRemove = (targetId) => {
     //console.log(`전달 ${targetId}`); // 해당 id 를 가진 요소를 제외한 새로운 배열을 반환 -> data 상태가 변했기 때문에 dataList가 다시 렌더 

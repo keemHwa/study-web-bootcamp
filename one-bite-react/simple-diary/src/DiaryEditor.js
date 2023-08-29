@@ -1,6 +1,15 @@
-import { useState,useRef } from "react";
+import React, { useEffect, useState,useRef } from "react";
 
-const DiaryEditor = ({onCreate}) => {
+const DiaryEditor = ({ onCreate }) => {
+    
+    useEffect(() => {
+        console.log(' DiaryEditor REDDER'); 
+        // 초기에 위 로그가 두번 찍히는 이유
+        // 1. app 컴포넌트가 처음 실행 될 때 
+        // 2. getDate() 이후 결과 값을 SetData하면서 App 컴포넌트가 리렌더되면서 그 안에 있는 함수(여기선 onCreacte) 가 다시 만들어짐      
+            // 삭제 후에도 다시 log가 찍힌다. 
+            // 똑같이 setData하면서 App 컴포넌트가 리렌더 되면서 onCreate가 다시 만들어지기 때문 
+    })
 
     const authorInput = useRef(); //React.MutableRefObject를 반환하는데 html dom elemte에 접근 할 수있게 해준다. 
     const contentInput = useRef();
@@ -79,4 +88,4 @@ const DiaryEditor = ({onCreate}) => {
     )
 }
 
-export default DiaryEditor;
+export default React.memo(DiaryEditor); // 컴포넌트가 동일한 props로 동일한 결과를 렌더링해낸다면 React는 컴포넌트를 렌더링하지 않고 마지막으로 렌더링된 결과를 재사용합니다.
