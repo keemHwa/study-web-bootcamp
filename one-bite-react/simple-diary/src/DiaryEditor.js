@@ -1,6 +1,6 @@
 import { useState,useRef } from "react";
 
-const DiaryEditor = () => {
+const DiaryEditor = ({onCreate}) => {
 
     const authorInput = useRef(); //React.MutableRefObject를 반환하는데 html dom elemte에 접근 할 수있게 해준다. 
     const contentInput = useRef();
@@ -23,7 +23,7 @@ const DiaryEditor = () => {
     }
 
     const handleChangeSubmit = () => {
-        console.log(state);
+        
         if (state.author.length < 1) {
             // alert('작성자는 최소 1글자 이상 입력해주세요.'); // alert 을 띄우는건 좋지 못한 ux 경험 
             authorInput.current.focus();
@@ -35,6 +35,14 @@ const DiaryEditor = () => {
             contentInput.current.focus();
             return;
         }
+
+        onCreate(state.author, state.content, state.emotion);
+        setState({
+            author: '',
+            content: '',
+            emotion: 1
+        }); //  저장 후 초기화 
+
     }
 
     return (
