@@ -2,6 +2,7 @@ import { useMemo, useState,useRef, useEffect } from 'react';
 import './App.css';
 import DiaryEditor from './DiaryEditor';
 import DiaryList from './DiaryList';
+// import OptimizeTest from './OptimizeTest';
 // import Lifecycle from './Lifecycle';
 // import LifecycleUnmount from './LifecycleUnmount';
 
@@ -13,7 +14,7 @@ function App() {
   const getDate = async () => {
     const res = await fetch('https://jsonplaceholder.typicode.com/posts/1/comments')
       .then((res) => res.json());
-    console.log(res);
+    //console.log(res);
     
     const initData = res.map((it) => {
       return {
@@ -47,13 +48,12 @@ function App() {
   };
 
   const onRemove = (targetId) => {
-    console.log(`전달 ${targetId}`); // 해당 id 를 가진 요소를 제외한 새로운 배열을 반환 -> data 상태가 변했기 때문에 dataList가 다시 렌더 
+    //console.log(`전달 ${targetId}`); // 해당 id 를 가진 요소를 제외한 새로운 배열을 반환 -> data 상태가 변했기 때문에 dataList가 다시 렌더 
     const newDiary = data.filter((it) => it.id !== targetId);
     setData(newDiary);
   }
   
   const onEdit = (targetId, newContent) => {
-    console.log(targetId, newContent)
     setData(data.map((it) => it.id === targetId ? { ...it, content: newContent } : it));
     
   }
@@ -65,7 +65,7 @@ function App() {
         // 계산 비용이 높은 연산의 결과를 캐싱하고, 이전 결과와 다를 때만 다시 계산하는 데 사용
         // 두번째 인자(data.length)로 넘긴 데이터에 변동이 있을 경우에만 콜백 함수 실행
         // 또한 콜백 함수가 리턴하는 값을 return 한다. 
-      console.log("일기 분석 시작");
+      //console.log("일기 분석 시작");
       // 해당 로그 2번 호출 
       // -> 1. App 컴포넌트가 처음 mount 될 때 출력
       // -> 2. getDate() api가 성공 후 setData가 이루어 지면서  App 컴포넌트가 리렌더되면서 그안에 있는 함수가 재생성 될 때                                
@@ -79,6 +79,7 @@ function App() {
 
   return (
     <div className="App">
+      {/* <OptimizeTest/> */}
       {/* <Lifecycle/> */}
       {/* <LifecycleUnmount/> */}
       <DiaryEditor onCreate={onCreate} />
