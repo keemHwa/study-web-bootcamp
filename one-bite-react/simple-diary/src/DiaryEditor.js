@@ -88,4 +88,5 @@ const DiaryEditor = ({ onCreate }) => {
     )
 }
 
-export default React.memo(DiaryEditor); // 컴포넌트가 동일한 props로 동일한 결과를 렌더링해낸다면 React는 컴포넌트를 렌더링하지 않고 마지막으로 렌더링된 결과를 재사용합니다.
+export default React.memo(DiaryEditor);
+// React.memo는 넘겨받은 props의 변경 여부만을 체크한다.하지만 컴포넌트 내부에서 useState같은 훅을 사용 하고 있는 경우에는 상태가 변경 되면 리렌더링 된다.

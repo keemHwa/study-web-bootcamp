@@ -76,4 +76,4 @@ const DiaryItem = ({ onEdit, onRemove, id, author, content, emotion, create_date
 }
 
 export default React.memo(DiaryItem); //이렇게 함으로써 변동이 없는 항목은 렌더링 하지 않고 기존걸 재사용한다. 
-
+// useCallback 사용만으로는 하위 컴포넌트의 리렌더를 막을 수 없다! 하위 컴포넌트가 참조 동일성에, 의존적인, 최적화된 Purecomponent!이어야만 비로소 불필요한 리렌더링을 막을 모든 것이 완성된다.

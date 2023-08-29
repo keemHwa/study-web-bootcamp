@@ -54,7 +54,7 @@ function App() {
     dataId.current += 1;
     //setData([newItem, ...data]); // 새 데이터 +  기존 데이터 전개
       setData((data) => [newItem, ...data]); // 최신의 state 인자로 가져오게된다. 
-  },[]);
+  },[]); // dependency가 없으므로 최초 한번만 생성
 
   const onRemove = useCallback((targetId) => { // onRemove는 한번만 생성되고 -> 재생성되면서 useEffect을 타는일은 없을 것 
     //console.log(`전달 ${targetId}`); // 해당 id 를 가진 요소를 제외한 새로운 배열을 반환 -> data 상태가 변했기 때문에 dataList가 다시 렌더 
