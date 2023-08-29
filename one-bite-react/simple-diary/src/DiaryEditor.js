@@ -7,7 +7,7 @@ const DiaryEditor = ({ onCreate }) => {
         // 초기에 위 로그가 두번 찍히는 이유
         // 1. app 컴포넌트가 처음 실행 될 때 
         // 2. getDate() 이후 결과 값을 SetData하면서 App 컴포넌트가 리렌더되면서 그 안에 있는 함수(여기선 onCreacte) 가 다시 만들어짐      
-            // 삭제 후에도 다시 log가 찍힌다. 
+            // 삭제(onRemove) 후에도 다시 log가 찍힌다. 
             // 똑같이 setData하면서 App 컴포넌트가 리렌더 되면서 onCreate가 다시 만들어지기 때문 
     })
 

@@ -1,12 +1,24 @@
-import { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-const DiaryItem = ({ onEdit, onRemove, id, author, content, emotion, create_date }) => {
+const DiaryItem = ({ onEdit, onRemove, id, author, content, emotion, create_date }) => { //onEdit, onRemove는 data state가 변하면 재생성될수밖에 없다. 
     
     const [isEdit, setIsEdit] = useState(false); // true,false에 따라 수정여부 확인 -> 수정폼을 보여줄지
     const toggleIsEdit = () => setIsEdit(!isEdit);
 
     const [localContent, setLocalContet] = useState(content); // 수정폼
     const localContentInput = useRef();
+
+    useEffect(() => {
+        console.log(`${id}번째 아이템 렌더 ! `); 
+        /**
+         *     // 하나만 삭제해도 다른 일기도 모두 리렌더링 되는 이슈 발생 ! 
+         * 0번째 아이템 렌더 ! 
+            1번째 아이템 렌더 ! 
+            2번째 아이템 렌더 ! 
+            3번째 아이템 렌더 ! 
+            4번째 아이템 렌더 ! 
+         */
+    })
 
     const handleRemove = () => {
         if (window.confirm(`${Number(id)+1}번째 일기를 정말 삭제하시겠습니까?`)) {
@@ -63,5 +75,5 @@ const DiaryItem = ({ onEdit, onRemove, id, author, content, emotion, create_date
     )
 }
 
-export default DiaryItem;
+export default React.memo(DiaryItem); //이렇게 함으로써 변동이 없는 항목은 렌더링 하지 않고 기존걸 재사용한다. 
 
