@@ -2,32 +2,8 @@ import { useState,useRef } from 'react';
 import './App.css';
 import DiaryEditor from './DiaryEditor';
 import DiaryList from './DiaryList';
-
-
-// const dummyList = [
-//   {
-//     id: 1,
-//     author: "테리",
-//     content: "하이1",
-//     emotion: 3,
-//     create_date: new Date().getTime()
-//   },
-//   {
-//     id: 2,
-//     author: "세나",
-//     content: "하이1",
-//     emotion: 5,
-//     create_date: new Date().getTime()
-//   },
-//   {
-//     id: 3,
-//     author: "미모쟈",
-//     content: "하이1",
-//     emotion: 1,
-//     create_date: new Date().getTime()
-//   }
-// ];
-
+// import Lifecycle from './Lifecycle';
+import LifecycleUnmount from './LifecycleUnmount';
 
 function App() {
 
@@ -63,6 +39,8 @@ function App() {
 
   return (
     <div className="App">
+      {/* <Lifecycle/> */}
+      <LifecycleUnmount/>
       <DiaryEditor onCreate={onCreate} />
       <DiaryList onRemove={onRemove} diaryList={data} onEdit={onEdit} />  { /* diaryItem에서 ondelete를 호출 할 수 있어야하므로, 그의 부모인 diaryList에 전달*/}
     </div>
