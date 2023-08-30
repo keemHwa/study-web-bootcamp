@@ -1,3 +1,97 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Didact+Gothic&family=Noto+Sans+KR:wght@400&display=swap');
+
+body{
+  background-color: #7777773b;
+  display: flex; /* 자식 요소들 가로정렬*/
+  justify-content: center; /*해당 (body)를 기준으로 아래 요소 가운데 정렬*/
+  align-items: center; /* display 속성이 flext인 경우 세로축을 기준으로 정렬하겠다.*/
+  font-family: 'Noto Sans KR';
+  min-height: 100vh;
+  margin: 0px;
+}
+
+/* 650 이상일 때 */
+@media (min-width:650px){ /*media query*/
+  .App{
+    width: 640px;
+  }
+}
+
+/* 650 이하일 때  */
+@media (max-width:650px){ 
+  .App{
+    width: 90vh; /* vh 지금화면에 90퍼를 차지하게하겠다 */
+  }
+}
+
+#root{
+  background-color: white;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
 .App{
-  padding: 20px;
+  min-height: 100vh;
+  padding: 0 20px 0 20px;
+}
+
+/* MyButton */
+.MyButton {
+  cursor: pointer;
+  border:3px solid #3a3838;
+  border-radius: 2px;
+  padding: 10px 20px 10px 20px;
+  font-weight: bold;
+  font-size: 18px;
+  white-space: nowrap; /*길어도 한줄로 */
+  font-family: 'Noto Sans KR';
+}
+
+.MyButton_default {
+  background-color: #f0f0f083;
+  color: black;
+}
+
+.MyButton_positive {
+  background-color: #179e4b9f;
+  color: black;
+}
+
+.MyButton_negative {
+  background-color: #9e17179f;
+  color: black;
+}
+
+
+/* HEADER */
+header{
+  padding: 20px 0px 20px 0px;
+  display: flex; /* html은 기본적으로 세로로 요소가 들어온다, flex로 지정해주면 가로로 들어오게된다. */
+  align-items: center; /* 세로축 기준 가운데정렬 */
+  border-bottom: 1px solid #3a3838 ;
+}
+
+header > div {  /* > 는 바로 아래에 있는 직계자식  */
+  /* head_btn_left, head_btn_right의 justify-content를 지정해주기 위해서 flex 지정 */
+  display: flex;
+}
+
+header .head_text{
+  width: 50%;
+  font-size: 25px;
+  justify-content: center;
+}
+
+header .head_btn_left{
+  width: 25%;
+  justify-content: start;
+}
+
+header .head_btn_right{
+  width: 25%;
+  justify-content: end;
+}
+
+header button{ /* 아래의 모든 button */
+  font-family: 'Noto Sans KR';
 }
