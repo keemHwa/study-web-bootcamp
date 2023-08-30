@@ -1,7 +1,11 @@
-import React, { useEffect, useState,useRef } from "react";
+import React, { useEffect, useState,useRef, useContext } from "react";
+import { DiaryDispatchContext } from "./App";
 
-const DiaryEditor = ({ onCreate }) => {
+
+const DiaryEditor = () => {
     
+    const { onCreate } = useContext(DiaryDispatchContext); // DiaryDispatchContext가 공급하고 있는 값은 객체이기에 비구조할당으로 받아야함
+
     useEffect(() => {
         console.log(' DiaryEditor REDDER'); 
         // 초기에 위 로그가 두번 찍히는 이유

@@ -1,4 +1,6 @@
-import { useMemo, useState,useRef, useEffect, useCallback, useReducer } from 'react';
+import React, { useMemo, useState, useRef, useEffect, useCallback, useReducer } from 'react';
+// 비구조할당을 통해 import 받은 것들은 이름을 바꿔서 받을 수없고 (export conts .. ), 
+// React같이 직접 import한건 export default 된 것으로 이름을 바꾸어 받을 수있다. 
 import './App.css';
 import DiaryEditor from './DiaryEditor';
 import DiaryList from './DiaryList';
@@ -29,11 +31,15 @@ const reducer = (state, action) => {
   }
 }
 
+// context API를 이용한 prop drilling 막기 
+export const DiaryStateContext = React.createContext(); // 오직 data
+  // export default는 하나만 사용가능 
+export const DiaryDispatchContext = React.createContext(); // 상태변화함수용 
+
 
 function App() {
 
   // const [data, setData] = useState([]); // 일기배열 
-  
   const [data, dispatch] = useReducer(reducer, []);// App 컴포넌트에서 상태변화로직(onCreate..같은)을 분리 할 수 있는 useReducer hook
     // dispatch(상태변화함수)는 함수형 업데이트 상관없이 호출하면 현재의 state를 reucer 함수가 참조하여 자동으로 하기에, usecallback과 사용시 dependency array를 걱정하지 않아도 된다. 
 
@@ -103,6 +109,11 @@ function App() {
     dispatch({ type: 'EDIT', targetId, newContent });
   }, []);
 
+  const memoizedDispatches = useMemo(() => {
+    // 여기서 useMemo를 해서 또 묶어주는 이유는 app()이 재생성 되면서 memoizedDispatches도 재성성되기 때문
+    return { onCreate, onRemove, onEdit };
+  }, [])  // dependency가 없으므로 최초 한번만 생성
+  
   // 감정 점수 비율
   const getDiaryAnalysis = useMemo(
     () => {
@@ -123,17 +134,25 @@ function App() {
   const { goodCount, badCount, goodRatio } = getDiaryAnalysis;
 
   return (
-    <div className="App">
-      {/* <OptimizeTest/> */}
-      {/* <Lifecycle/> */}
-      {/* <LifecycleUnmount/> */}
-      <DiaryEditor onCreate={onCreate} />
-      <div> 전체 일기 : {data.length} </div>
-      <div> 기분 좋은 일기 개수 : {goodCount} </div>
-      <div> 기분 나쁜 일기 개수 : {badCount} </div>
-      <div> 기분 좋은 일기 비율 : {goodRatio} </div>
-      <DiaryList onRemove={onRemove} diaryList={data} onEdit={onEdit} />  { /* diaryItem에서 ondelete를 호출 할 수 있어야하므로, 그의 부모인 diaryList에 전달*/}
-    </div>
+    <DiaryStateContext.Provider value={data}>
+      {/* 여기서 상태변화 함수도 같이 내려주게되면, provider도 결국 컴포넌트이기 때문에 prop이 바뀌어버리면 재생성 된다. 
+        ==> 즉 data가 바뀔 때마다 최적화가 걸려있어도 상태변화 함수도 같이 리렌더링이 일어나게 된다. 
+        ==> 상태변화 함수에 지금 최적화가 걸려있기 때문에 아래와 같이 중첩을 걸어주면 리렌더링 않는다.  */}
+      <DiaryDispatchContext.Provider value={memoizedDispatches}>
+        <div className="App">
+          {/* <OptimizeTest/> */}
+          {/* <Lifecycle/> */}
+          {/* <LifecycleUnmount/> */}
+          <DiaryEditor/>
+          <div> 전체 일기 : {data.length} </div>
+          <div> 기분 좋은 일기 개수 : {goodCount} </div>
+          <div> 기분 나쁜 일기 개수 : {badCount} </div>
+          <div> 기분 좋은 일기 비율 : {goodRatio} </div>
+          <DiaryList/>  { /* diaryItem에서 ondelete를 호출 할 수 있어야하므로, 그의 부모인 diaryList에 전달*/}
+        </div>
+      </DiaryDispatchContext.Provider>
+    </DiaryStateContext.Provider>
+    
   );
 }
 

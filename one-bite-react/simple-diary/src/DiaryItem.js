@@ -1,7 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { DiaryDispatchContext } from "./App";
 
-const DiaryItem = ({ onEdit, onRemove, id, author, content, emotion, create_date }) => { //onEdit, onRemove는 data state가 변하면 재생성될수밖에 없다. 
+const DiaryItem = ({  id, author, content, emotion, create_date }) => { //onEdit, onRemove는 data state가 변하면 재생성될수밖에 없다.
     
+    const {onEdit, onRemove,} = useContext(DiaryDispatchContext);// context에서 데이터를 가져오기
+
     const [isEdit, setIsEdit] = useState(false); // true,false에 따라 수정여부 확인 -> 수정폼을 보여줄지
     const toggleIsEdit = () => setIsEdit(!isEdit);
 
