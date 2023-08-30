@@ -89,4 +89,5 @@ const DiaryEditor = ({ onCreate }) => {
 }
 
 export default React.memo(DiaryEditor);
-// React.memo는 넘겨받은 props의 변경 여부만을 체크한다.하지만 컴포넌트 내부에서 useState같은 훅을 사용 하고 있는 경우에는 상태가 변경 되면 리렌더링 된다.
+// React.memo는 넘겨받은 props의 변경 여부만을 체크한다
+// .하지만 컴포넌트 내부에서 useState같은 훅을 사용 하고 있는 경우에는 상태가 변경 되면 리렌더링 된다.
