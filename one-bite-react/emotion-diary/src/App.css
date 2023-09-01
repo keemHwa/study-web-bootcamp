@@ -1,36 +1,36 @@
+@import url("https://fonts.googleapis.com/css2?family=Didact+Gothic&family=Noto+Sans+KR:wght@400&display=swap");
 
-@import url('https://fonts.googleapis.com/css2?family=Didact+Gothic&family=Noto+Sans+KR:wght@400&display=swap');
-
-body{
+body {
   background-color: #7777773b;
   display: flex; /* 자식 요소들 가로정렬*/
   justify-content: center; /*해당 (body)를 기준으로 아래 요소 가운데 정렬*/
   align-items: center; /* display 속성이 flext인 경우 세로축을 기준으로 정렬하겠다.*/
-  font-family: 'Noto Sans KR';
+  font-family: "Noto Sans KR";
   min-height: 100vh;
   margin: 0px;
 }
 
 /* 650 이상일 때 */
-@media (min-width:650px){ /*media query*/
-  .App{
+@media (min-width: 650px) {
+  /*media query*/
+  .App {
     width: 640px;
   }
 }
 
 /* 650 이하일 때  */
-@media (max-width:650px){ 
-  .App{
+@media (max-width: 650px) {
+  .App {
     width: 90vh; /* vh 지금화면에 90퍼를 차지하게하겠다 */
   }
 }
 
-#root{
+#root {
   background-color: white;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
-.App{
+.App {
   min-height: 100vh;
   padding: 0 20px 0 20px;
 }
@@ -38,13 +38,13 @@ body{
 /* MyButton */
 .MyButton {
   cursor: pointer;
-  border:2px solid #3a3838;
+  border: 2px solid #3a3838;
   border-radius: 2px;
   padding: 10px 20px 10px 20px;
   font-weight: bold;
   font-size: 18px;
   white-space: nowrap; /*길어도 한줄로 */
-  font-family: 'Noto Sans KR';
+  font-family: "Noto Sans KR";
 }
 
 .MyButton_default {
@@ -62,62 +62,62 @@ body{
   color: black;
 }
 
-
 /* HEADER */
-header{
+header {
   padding: 20px 0px 20px 0px;
   display: flex; /* html은 기본적으로 세로로 요소가 들어온다, flex로 지정해주면 가로로 들어오게된다. */
   align-items: center; /* 세로축 기준 가운데정렬 */
-  border-bottom: 3px solid #3a3838 ;
+  border-bottom: 3px solid #3a3838;
 }
 
-header > div {  /* > 는 바로 아래에 있는 직계자식  */
+header > div {
+  /* > 는 바로 아래에 있는 직계자식  */
   /* head_btn_left, head_btn_right의 justify-content를 지정해주기 위해서 flex 지정 */
   display: flex;
 }
 
-header .head_text{
+header .head_text {
   width: 50%;
   font-size: 25px;
   justify-content: center;
 }
 
-header .head_btn_left{
+header .head_btn_left {
   width: 25%;
   justify-content: start;
 }
 
-header .head_btn_right{
+header .head_btn_right {
   width: 25%;
   justify-content: end;
 }
 
-header button{ /* 아래의 모든 button */
-  font-family: 'Noto Sans KR';
+header button {
+  /* 아래의 모든 button */
+  font-family: "Noto Sans KR";
 }
 
 /* DiaryList */
 
-.DiaryList .menu_wrapper{
+.DiaryList .menu_wrapper {
   margin-top: 20px;
   margin-bottom: 30px;
   display: flex;
   justify-content: space-between;
 }
 
-.DiaryList .menu_wrapper .right_col{
-  flex-grow: 1; 
+.DiaryList .menu_wrapper .right_col {
+  flex-grow: 1;
   /* flex-grow: display flex 속성 부모 아래에 남은 넓이를 자신이 차지하게된다. */
 }
 
-
-.DiaryList .menu_wrapper .right_col button{
+.DiaryList .menu_wrapper .right_col button {
   width: 100%;
 }
 
-.DiaryList .ControlMenu{
+.DiaryList .ControlMenu {
   margin-right: 10px;
-  border:2px solid #3a3838;
+  border: 2px solid #3a3838;
   border-radius: 2px;
   background-color: #f0f0f083;
   padding-top: 10px;
@@ -125,17 +125,16 @@ header button{ /* 아래의 모든 button */
   padding-left: 20px;
   padding-right: 20px;
   cursor: pointer;
-  font-family: 'Noto Sans KR';
+  font-family: "Noto Sans KR";
   font-size: 18px;
 }
 
-
 /* DiaryItem */
 
-.DiaryItem{
+.DiaryItem {
   padding-top: 15px;
   padding-bottom: 15px;
-  border-bottom: 2px solid #3a3838 ;
+  border-bottom: 2px solid #3a3838;
   display: flex;
   justify-content: space-between;
 }
@@ -162,30 +161,126 @@ header button{ /* 아래의 모든 button */
   background-color: #fd8446;
 }
 .DiaryItem .emotion_img_wrapper_5 {
-  background-color: #fd565f
+  background-color: #fd565f;
 }
-.DiaryItem .emotion_img_wrapper img{
+.DiaryItem .emotion_img_wrapper img {
   width: 50%;
 }
 
-.DiaryItem .info_wrapper{
+.DiaryItem .info_wrapper {
   flex-grow: 1;
   cursor: pointer;
   margin-left: 20px;
 }
 
-.DiaryItem .diary_date{
+.DiaryItem .diary_date {
   font-weight: bold;
   font-size: 25px;
   margin-bottom: 5px;
 }
 
-.DiaryItem .diary_content_preview{
-  font-size:18px
+.DiaryItem .diary_content_preview {
+  font-size: 18px;
 }
 
-.DiaryItem .btn_wrapper{
+.DiaryItem .btn_wrapper {
   min-width: 70px;
   display: flex;
   align-items: center;
+}
+
+/* DiaryEditor */
+.DiaryEditor {
+}
+
+.DiaryEditor section {
+  margin-bottom: 40px;
+}
+
+.DiaryEditor h4 {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.DiaryEditor .input_date {
+  border: 2px solid #3a3838;
+  border-radius: 2px;
+  background-color: #f0f0f083;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  cursor: pointer;
+  font-family: "Noto Sans KR";
+  font-size: 20px;
+}
+
+.DiaryEditor .emotion_list_wrapper {
+  display: grid;
+  grid-template-columns: repeat(5, auto);
+  /* 몇개로 col를 나눌것이면 사이즈지정 (여기선 auto) */
+  gap: 2%;
+}
+
+.DiaryEditor textarea {
+  border: 2px solid #3a3838;
+  font-family: "Noto Sans KR";
+  font-size: 20px;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 200px;
+  resize: vertical;
+  background-color: #f0f0f083;
+  padding: 20px;
+}
+
+.DiaryEditor .control_box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* EMOTION ITEM */
+.Emotion_item {
+  border: 2px solid #3a3838;
+  cursor: pointer;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column; /* 텍스트가 밑에 나오게 하도록 세로정렬 */
+  justify-content: center; /* 컬럼을 중심으로 (세로) 가운데 점을 찾아줌 */
+  align-items: center; /* 정사각형일 때 요소들을 그안에서 가운데 정렬  */
+}
+
+.Emotion_item img {
+  width: 50%;
+  margin-bottom: 10px;
+}
+
+.Emotion_item span {
+  font-size: 18px;
+}
+.emotionItem_off {
+  background-color: #f0f0f083;
+}
+
+.emotionItem_on1 {
+  background-color: #64c964;
+  color: white;
+}
+.emotionItem_on2 {
+  background-color: #9dd772;
+  color: white;
+}
+.emotionItem_on3 {
+  background-color: #fdce17;
+  color: white;
+}
+.emotionItem_on4 {
+  background-color: #fd8446;
+  color: white;
+}
+.emotionItem_on5 {
+  background-color: #fd565f;
+  color: white;
 }

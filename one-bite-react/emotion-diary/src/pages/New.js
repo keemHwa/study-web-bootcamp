@@ -1,11 +1,13 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import DiaryEditor from "../components/DiaryEditor";
 
 const New = () => {
-    return (
-        <div>
-            <h1>New</h1>
-            <p>이곳은 일기 추가 작성페이지 입니다.</p>
-        </div>
-    );
+  return (
+    <div>
+      <DiaryEditor />
+    </div>
+  );
 };
 
 export default New;
