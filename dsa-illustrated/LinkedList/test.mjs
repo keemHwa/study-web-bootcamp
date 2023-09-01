@@ -53,4 +53,4 @@ list.insertLast(5);
 console.log(list.getNodeAt(3)); //  data: 4, next: Node { data: 5, next: null }
 
 let secondNode = list.getNodeAt(2);
-console.log(secondNode.data);
+console.log(secondNode.data); 
