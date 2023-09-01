@@ -2,7 +2,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 
 const Edit = () => {
 
-    const navigate = useNavigate();
+    const navigate = useNavigate(); // Routes에 등록한 경로와 일치하는 파일을 찾음
     const [searchParams, setSearchParams] = useSearchParams(); // Query String ?id=
 
     const id = searchParams.get('id');

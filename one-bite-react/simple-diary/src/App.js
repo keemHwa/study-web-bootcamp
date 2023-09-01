@@ -35,6 +35,8 @@ const reducer = (state, action) => {
 export const DiaryStateContext = React.createContext(); // 오직 data
   // export default는 하나만 사용가능 
 export const DiaryDispatchContext = React.createContext(); // 상태변화함수용 
+/* 값(data)과 상태변화 함수(onCreate, onUpdate, onDelete)를 각각 다른 객체로 묶어주기 때문에 
+값의 변화에도 상태변화 함수를 묶는 객체가 다시 생성되지는 않는다,(useMemo 적용시)*/
 
 
 function App() {
