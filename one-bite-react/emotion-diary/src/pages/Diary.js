@@ -57,11 +57,22 @@ const Diary = () => {
           {/* 여기서부터 content */}
           <section>
             <h4>오늘의 감정</h4>
-            <div className="diary_img_wrapper">
+            <div
+              className={[
+                "diary_img_wrapper",
+                `diary_img_wrapper${data.emotion}`,
+              ].join(" ")}
+            >
               <img src={curEmotionData.emotion_img} />
               <div className="emotion_descript">
                 {curEmotionData.emotion_description}
               </div>
+            </div>
+          </section>
+          <section>
+            <h4>오늘의 일기</h4>
+            <div className="diary_content_wrapper">
+              <p>{data.content}</p>
             </div>
           </section>
         </article>
