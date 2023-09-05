@@ -30,7 +30,7 @@ const Home = () => {
       23,
       59,
       59
-    ).getTime(); //달의 마지막 달 포함
+    ).getTime(); //달의 마지막 날 포함 (시분초를 넣지 않으면 2023. 9. 30. 오전 12:00:00 이렇게 나오기 때문 )
 
     setData(
       diaryList.filter((it) => firstDay <= it.date && it.date <= lastDay)
