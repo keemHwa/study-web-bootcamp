@@ -19,6 +19,7 @@ const Edit = () => {
       // 하나의 값만 받고 그걸 이용하는거려면 find가 이후 데이터 활용하기 편하다..
 
       if (!targetDiary) {
+        alert("없는 일기 입니다.");
         navigate("/", { replace: true });
         return;
       }
