@@ -78,7 +78,7 @@ const dummyData = [
 function App() {
   const [data, dispatch] = useReducer(reducer, dummyData);
 
-  const dataId = useRef(1);
+  const dataId = useRef(dummyData.length + 1);
 
   // CREATE
   const onCreate = (date, content, emotion) => {
