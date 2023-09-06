@@ -48,12 +48,12 @@ function App() {
     //LocalStorage 활용
     const localData = localStorage.getItem("diary"); // string
 
-    if (localData.length) {
+    if (localData) {
       const diaryList = JSON.parse(localData).sort(
         (a, b) => parseInt(b.id) - parseInt(a.id)
       ); // sort 내림차순 아이디 정렬 (반환 값이 0 보다 크면 b가 앞으로 온다. )
 
-      if (diaryList.length > 1) {
+      if (diaryList.length >= 1) {
         dataId.current = parseInt(diaryList[0].id) + 1;
         // useEffect는 컴포넌트가 렌더링 및 업데이트 되고 나서 수행되기 때문에
         // 여기서 dataId를 사용해도 문제없다.
