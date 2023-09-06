@@ -1,5 +1,5 @@
-import React, { useReducer, useRef } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React, { useEffect, useReducer, useRef } from "react";
+import { BrowserRouter, Routes, Route, json } from "react-router-dom";
 
 import logo from "./logo.svg";
 import "./App.css";
@@ -24,7 +24,7 @@ const reducer = (state, action) => {
       break; // 없으면 다음 case문을 실행한다.
     }
     case "REMOVE": {
-      newState = state.filer((it) => it.id !== action.targetId);
+      newState = state.filter((it) => it.id !== action.targetId);
       break;
     }
     case "EDIT": {
@@ -36,50 +36,39 @@ const reducer = (state, action) => {
     default:
       return state;
   }
+  localStorage.setItem("diary", JSON.stringify(newState));
   return newState;
 };
 
 export const DiaryStateContext = React.createContext(); // context API
 export const DiaryDispatchContext = React.createContext(); // context API
 
-const dummyData = [
-  {
-    id: 1,
-    emotion: 1,
-    content: "오늘의 일기 1번",
-    date: 1693555995077,
-  },
-  {
-    id: 2,
-    emotion: 2,
-    content: "오늘의 일기 2번",
-    date: 1693555995076,
-  },
-  {
-    id: 3,
-    emotion: 3,
-    content: "오늘의 일기 3번",
-    date: 1693555995074,
-  },
-  {
-    id: 4,
-    emotion: 5,
-    content: "오늘의 일기 4번",
-    date: 1693555995079,
-  },
-  {
-    id: 5,
-    emotion: 1,
-    content: "오늘의 일기 5번",
-    date: 1693555995070,
-  },
-];
-
 function App() {
-  const [data, dispatch] = useReducer(reducer, dummyData);
+  useEffect(() => {
+    //LocalStorage 활용
+    const localData = localStorage.getItem("diary"); // string
 
-  const dataId = useRef(dummyData.length + 1);
+    if (localData.length) {
+      const diaryList = JSON.parse(localData).sort(
+        (a, b) => parseInt(b.id) - parseInt(a.id)
+      ); // sort 내림차순 아이디 정렬 (반환 값이 0 보다 크면 b가 앞으로 온다. )
 
+      if (diaryList.length > 1) {
+        dataId.current = parseInt(diaryList[0].id) + 1;
+        // useEffect는 컴포넌트가 렌더링 및 업데이트 되고 나서 수행되기 때문에
+        // 여기서 dataId를 사용해도 문제없다.
+        dispatch({ type: "INIT", data: diaryList });
+      }
+    }
+
+    //const item3 = JSON.parse(localStorage.getItem("item3"));
+    //localStorage.setItem("item3", JSON.stringify({ value: 20 }));
+    //localStorage는 기본적으로 문자로 저장한다 -> 객체는 문자열로 저장해야함
+  }, []);
+
+  const [data, dispatch] = useReducer(reducer, []);
+
+  const dataId = useRef(data.length + 1);
   // CREATE
   const onCreate = (date, content, emotion) => {
     dispatch({

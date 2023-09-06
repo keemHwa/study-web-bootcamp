@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MyButton from "./MyButton";
 import { useNavigate } from "react-router-dom";
 import DiaryItem from "./DiaryItem";
@@ -14,7 +14,7 @@ const filterOptinList = [
   { value: "bad", name: "나쁜 감정만" },
 ];
 
-const ControlMenu = ({ value, onChange, optionList }) => {
+const ControlMenu = React.memo(({ value, onChange, optionList }) => {
   return (
     <select
       className="ControlMenu"
@@ -30,7 +30,7 @@ const ControlMenu = ({ value, onChange, optionList }) => {
       ))}
     </select>
   );
-};
+});
 
 const DiaryList = ({ diaryList }) => {
   const navigate = useNavigate();
@@ -39,6 +39,7 @@ const DiaryList = ({ diaryList }) => {
   // 해당 컴포넌트(DiaryList)의 상태(sortType)가 변경 될 때마다 컴포넌트(DiaryList)가 리렌더링 된다.
   // 동시에 getProcessedDiaryList도 호출된다. 그러면서 DiaryList가 정렬 되는 것
   const [filter, setFilter] = useState("all");
+  // useState에서 반환받은 상태변화 함수(setFilter) 들은 동일한 아이디 값을 반환하기 때문에 기본적으로 useCallback사용 되어서 나오는 함수
 
   const getProcessedDiaryList = () => {
     const filterCallBack = (item) => {

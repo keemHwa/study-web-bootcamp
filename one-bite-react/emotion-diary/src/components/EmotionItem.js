@@ -1,8 +1,11 @@
+import React from "react";
+
 const EmotionItem = ({
   emotion_id,
   emotion_img,
   emotion_description,
   onClick,
+  // useState 상태변화 함수가 아니거나, useCallback으로묶어놓지 않으면 컴포넌트 렌더링 될 때 재생성된다.
   isSelected,
 }) => {
   return (
@@ -19,4 +22,4 @@ const EmotionItem = ({
   );
 };
 
-export default EmotionItem;
+export default React.memo(EmotionItem);

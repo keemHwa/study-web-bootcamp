@@ -12,6 +12,11 @@ const Home = () => {
   const headText = `${curDate.getFullYear()}년 ${curDate.getMonth() + 1}월`;
 
   useEffect(() => {
+    const titleElement = document.getElementsByTagName("title")[0];
+    titleElement.innerHTML = `감정 일기장`;
+  }, []);
+
+  useEffect(() => {
     // mount 될 때, 넘어온 데이터를 현재 조회하는 날짜에 맞춰서 filter
 
     if (diaryList.length === 0) return;

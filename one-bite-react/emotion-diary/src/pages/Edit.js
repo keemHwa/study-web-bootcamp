@@ -12,6 +12,11 @@ const Edit = () => {
   const diayrList = useContext(DiaryStateContext); //diaryList 받아오기
 
   useEffect(() => {
+    const titleElement = document.getElementsByTagName("title")[0];
+    titleElement.innerHTML = `감정 일기장 - ${id}번 일기 수정`;
+  }, []);
+
+  useEffect(() => {
     if (diayrList.length >= 1) {
       const targetDiary = diayrList.find(
         (it) => parseInt(it.id) === parseInt(id)
