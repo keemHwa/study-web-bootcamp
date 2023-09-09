@@ -7,11 +7,11 @@ import classes from "./Counter.module.css";
 const Counter = () => {
   const dispatch = useDispatch(); // action
 
-  const counter = useSelector((state) => state.counter); // useSelector를 사용함으로써 리덕스 저장소에 자동 구독 설정한다.
+  const counter = useSelector((state) => state.counter.counter); // useSelector를 사용함으로써 리덕스 저장소에 자동 구독 설정한다.
   // 해당 리덕스 상태를 받는다.
   // 또한 함수를 통해 상태에서 일부분만 추출 가능
   // 구독 === useSelector로 선택한 상태는 리덕스 저장소에 데이터가 변경 될 때마다 자동으로 업데이트 되며 컴포넌트도 재실행되고 받아온 최신데이터를 기반으로 렌더링을 진행한다.
-  const show = useSelector((state) => state.showCounter);
+  const show = useSelector((state) => state.counter.showCounter);
   // useSelector 함수의 동작은 Redux 스토어의 상태 구조와 일치하는 대로 동작
 
   const incrementHandler = () => {

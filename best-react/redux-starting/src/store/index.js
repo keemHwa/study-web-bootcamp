@@ -2,18 +2,19 @@
 import { createStore } from "redux";
 import { createSlice, configureStore } from "@reduxjs/toolkit";
 
-const initialState = { counter: 0, showCounter: true };
+const initialCounterState = { counter: 0, showCounter: true };
+const initialAuthState = { isAuthenticated: false };
 
 const counterSlice = createSlice({
   name: "counter",
-  initialState, // initialState : initialState
+  initialState: initialCounterState, // initialState : initialState
   reducers: {
     // reducer는 객체 혹은 맵
     // 아래의 메서드는 자동으로 최근 state 값을 받는다
     // 여기선 액션을 했느냐에 따라 메서드가 자동호출되므로 액션 마다 if를 쓸 필요가 없다.
     // => 보일러 플레이트 코드를 줄 일 수 있다.
     increment(state) {
-      state.counter++; // 직접 상태를 변경 할 수있게 됐다. (그렇게 보이는 것)
+      state.counter++; // 직접 상태를 변경 할 수있게 됐다. (하지만 그렇게 보이는 것)
     },
     decrement(state) {
       state.counter--;
@@ -24,6 +25,19 @@ const counterSlice = createSlice({
     },
     toggle(state) {
       state.showCounter = !state.showCounter;
+    },
+  },
+});
+
+const authSlice = createSlice({
+  name: "authentication",
+  initialState: initialAuthState,
+  reducers: {
+    login(state) {
+      state.isAuthenticated = true;
+    },
+    lougout(state) {
+      state.isAuthenticated = false;
     },
   },
 });
@@ -70,12 +84,23 @@ const conterReducer = (state = initialState, action) => {
 // const store = createStore(conterReducer); // 어떤 리듀서가 저장소를 변경하는지 인자로 전달 하여 저장소 생성
 // const store = createStore(createSlice.reducer); // slice에 설정한 리듀서에 접근 가능
 const store = configureStore({
-  reducer: counterSlice.reducer,
+  reducer: {
+    counter: counterSlice.reducer,
+    auth: authSlice.reducer,
+  },
 });
-// slice는 여러개 일 수 있다. (데이터 마다 묶다보면 .. ) 하지만 reducer는 하나여야한다.
-//  -> configureStore를 이용해  여러개 slice.reducer를 하나로 합친다..
-// reducer: { counter: counterSlice.reducer.
-//             toggle: testSlice.reducer } => 이럴경우 useSelector 시 state.counter.counter / state.toggle.shoCounter로 접근해야함 ,
+// slice는 여러개 일 수 있다. (데이터 마다 묶다보면 .. ) 하지만 store와  reducer는 하나여야한다.
+/* 스토어 구조는 아래처럼 들어온다. 
+  counter: { // initialState
+    counter: 0, 
+    showCounter: true
+  }, 
+  auth:{
+    isAuthenticated : false
+  }
+  / => 이럴경우 useSelector 시 state.counter.counter / state.auth.shoCounter로 접근해야함.
+  */
+// 아니면 reducer : counterSlice.reducer // 단일시  state.counter로 받을 수 있다.
 export const counterActions = counterSlice.actions; // 액션 객체 생성  type 프로퍼티도 이미 가지고 있다. (리듀서와 이름이 같으면 됨)
-
+export const authActions = authSlice.actions;
 export default store;
