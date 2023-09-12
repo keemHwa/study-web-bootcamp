@@ -2,7 +2,7 @@ import { Fragment, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 // import { uiActions } from "./store/ui-slice";
-import { sendCartData } from "./store/cart-slice";
+import { sendCartData, fetchCartData } from "./store/cart-action";
 
 import Cart from "./components/Cart/Cart";
 import Layout from "./components/Layout/Layout";
@@ -17,6 +17,10 @@ function App() {
   const cart = useSelector((state) => state.cart);
   const notification = useSelector((state) => state.ui.notification);
 
+  useEffect(() => {
+    dispatch(fetchCartData());
+  }, []);
+
   // 논리를 action creator function 에 옮긴 redux 비동기 코드
   // 이쪽이 컴포넌트가 lean(컴포넌트가 최소한의 로직과 상태만을 포함하고, 가능한 간결하며 목적에 집중한 상태)라고 할 수 있다.
   useEffect(() => {
@@ -24,7 +28,9 @@ function App() {
       isInitial = false;
       return; // 처음 sendCartData를 하지 않기위해서  + notification을 보지 않기 위해서?
     }
-    dispatch(sendCartData(cart));
+    if (cart.changed) {
+      dispatch(sendCartData(cart));
+    }
   }, [cart, dispatch]);
 
   // 컴포넌트에 직접 해당 논리를 부여한  redux 비동기 코드

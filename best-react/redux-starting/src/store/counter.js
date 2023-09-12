@@ -62,6 +62,8 @@ const conterReducer = (state = initialState, action) => {
    추가 ) 리턴시 state.counter++은 안되고, state.counter+1이 되는 이유 
     state.counter++은 기존 counter의 상태를 직접적으로 변경한 것 
     state.counter+1은 현재값을 가져와 1을 더한 단순 계산된값을 반환한 것 
+    - 리듀서 내에서 데이터를 수정하려는 시도는 피해야 하며, 
+    대신 새로운 객체나 배열을 생성하고 원하는 변경 사항을 적용한 후 이를 반환해야 한다. 
    */
 //};
 
